@@ -1,0 +1,53 @@
+apiVersion: omd.com/v1alpha1
+kind: Program
+metadata:
+  labels:
+    app.kubernetes.io/name: program
+    app.kubernetes.io/instance: program-sample
+    app.kubernetes.io/part-of: omd-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: omd-operator
+  name: program-sample
+spec:
+  deploy:
+    server: https://kubernetes.default.svc
+    branch: main
+    path: demo-1
+    repo: git@github.com:oh-my-deploy/omd-operator-example
+  app:
+    # replicas: 1
+    container:
+      name: nginx
+      image: nginx:1.26.0
+      ports:
+        - name: http
+          port: 80
+          containerPort: 80
+          protocol: TCP
+    appType: server
+  service:
+    enabled: true
+  serviceAccount:
+    create: true
+    serviceAccountName: "test"
+  ingress:
+    enabled: false
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+    rules:
+      host: "nginx.example.com"
+      annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /
+      paths:
+        - path: /
+          pathType: Prefix
+  scheduler:
+    pdb:
+      enabled: true
+      minAvailable: 2
+      maxUnavailable: 0
+    hpa:
+      enabled: true
+      minReplicas: 3
+      maxReplicas: 10
+      targetCPUUtilizationPercentage: 80
