@@ -17,7 +17,7 @@ spec:
   app:
     container:
       name: nginx
-      image: "docker.io/tae2089:"
+      image: docker.io/tae2089:dev-1aaf22b
       ports:
         - name: http
           containerPort: 80
