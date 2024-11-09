@@ -39,11 +39,11 @@ spec:
         - path: /
   scheduler:
     pdb:
-      enabled: true
+      enabled: false
       minAvailable: 2
       maxUnavailable: 0
     hpa:
-      enabled: true
+      enabled: false
       minReplicas: 3
       maxReplicas: 10
       metrics:
